@@ -12,4 +12,17 @@ class Firestore {
     final notesStream = notes.orderBy('time', descending: true).snapshots();
     return notesStream;
   }
+
+  Future<void> updateNote(String id, String newNote){
+    return notes.doc(id).update({
+      'note': newNote,
+      'time': DateTime.now()
+    }); 
+  }
+
+  Future<void> delete(String id){
+    return notes.doc(id).delete();
+  }
+
+  
 }

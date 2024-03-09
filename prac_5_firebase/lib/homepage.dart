@@ -14,7 +14,8 @@ class _HomePageState extends State<HomePage> {
   //vars:
   TextEditingController textCon = TextEditingController();
   Firestore fire = Firestore();
-  void openNotes() {
+
+  void openNotes(String? docId) {
     showDialog(
         context: context,
         builder: (context) {
@@ -25,7 +26,12 @@ class _HomePageState extends State<HomePage> {
             actions: [
               ElevatedButton(
                   onPressed: () {
-                    fire.addNote(textCon.text);
+                    if(docId==null){
+                      fire.addNote(textCon.text);
+                    }
+                    else{
+                      fire.updateNote(docId, textCon.text);
+                    }
                     textCon.clear();
                     Navigator.pop(context);
                   },
@@ -42,9 +48,7 @@ class _HomePageState extends State<HomePage> {
         title: Text('firestore test'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          openNotes();
-        },
+        onPressed: () => openNotes,
         child: Icon(Icons.add),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -66,6 +70,12 @@ class _HomePageState extends State<HomePage> {
 
                   return ListTile(
                     title: Text(notesText),
+                    trailing: Row(
+                      children: [
+                        IconButton(onPressed: ()=> openNotes(docId), icon: Icon(Icons.settings)),
+                        IconButton(onPressed: ()=>fire.delete(docId), icon:Icon(Icons.transit_enterexit_sharp))
+                      ],
+                    )
                   );
                 });
           } else {
