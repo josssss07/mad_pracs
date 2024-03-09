@@ -71,6 +71,7 @@ class _HomePageState extends State<HomePage> {
                   return ListTile(
                     title: Text(notesText),
                     trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(onPressed: ()=> openNotes(docId), icon: Icon(Icons.settings)),
                         IconButton(onPressed: ()=>fire.delete(docId), icon:Icon(Icons.transit_enterexit_sharp))
